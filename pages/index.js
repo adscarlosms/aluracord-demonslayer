@@ -112,10 +112,10 @@ function Titulo(props){
                 fullWidth
                 textFieldColors={{
                   neutral: {
-                    textColor: appConfig.theme.colors.primary["999"],
+                    textColor:  appConfig.theme.colors.neutrals["000"],
                     mainColor: appConfig.theme.colors.primary["800"],
                     mainColorHighlight: appConfig.theme.colors.primary["900"],
-                    backgroundColor: appConfig.theme.colors.neutrals["800"],
+                    backgroundColor: appConfig.theme.colors.primary["800"],
                   },
                 }}
               />
