@@ -1,35 +1,9 @@
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import React from 'react';
+import { useRouter } from 'next/router';
 
-function GlobalStyle(){
-    return(
-        <style global jsx>{`
-            *{
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                list-style: none;
-            } 
-            body{
-                font-family:'Open Sans', sans-serif;
-            }
-            /*App fit Height*/
-            html, body, #__next{
-                min-height: 100vh;
-                display: flex;
-                flex: 1;
-            }
-            #__next{
-                flex: 1;
-            }
-            #__next > * {
-                flex: 1;
-            }
-            /* ./App fit Height */
-            
-        `}</style>
-    );
-}
+
 
 function Titulo(props){
     const Tag = props.tag || 'h1'; 
@@ -65,11 +39,14 @@ function Titulo(props){
  // export default HomePage
 
  export default function PaginaInicial() {
-    const username = 'adscarlosms';
+    //const username = 'adscarlosms';
+    const [username, setUsername] = React.useState('adscarlosms');
+    const roteamento = useRouter();
   
     return (
       <>
-        <GlobalStyle />
+        {/* 
+        Foi tirado o <GlobalStyle /> porque o arquivo _app.js contém ele e é um arquivo global */}
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -97,6 +74,11 @@ function Titulo(props){
             {/* Formulário */}
             <Box
               as="form"
+              onSubmit = {function (infosDoEvento){
+                infosDoEvento.preventDefault();  
+                //Para usar o recurso de roteamento do Next
+                roteamento.push('/chat');
+              }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -107,7 +89,29 @@ function Titulo(props){
                 {appConfig.name}
               </Text>
   
-              <TextField
+            {/*  <input 
+                type="text"
+                value={username}
+                onChange={function (event){
+                    console.log('usuario digitou', event.target.value);
+                    //Onde está o valor ?
+                    const valor = event.target.value;
+                    //Trocar o valor do value
+                    setUsername(valor);
+                }} 
+             />   */}     
+             {<TextField
+                value={username}
+                onChange={function (event){
+                   
+                    console.log('usuario digitou', event.target.value);
+                    //Onde está o valor ?
+                    const valor = event.target.value;
+                    //Trocar o valor do value
+                    setUsername(valor);                       
+              
+
+                }}
                 placeholder="Digite o usuário do GitHub"
                 fullWidth
                 textFieldColors={{
@@ -118,7 +122,7 @@ function Titulo(props){
                     backgroundColor: appConfig.theme.colors.primary["800"],
                   },
                 }}
-              />
+              />}
               <Button
                 type='submit'
                 label='Entrar'
@@ -155,7 +159,12 @@ function Titulo(props){
                   borderRadius: '50%',
                   marginBottom: '16px',
                 }}
-                src={`https://github.com/${username}.png`}
+
+                src={
+                    username.length > 2
+                    ? `https://github.com/${username}.png`
+                    : `imgerro.png`
+                }
               />
               <Text
                 variant="body4"
