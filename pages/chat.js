@@ -7,8 +7,11 @@ import {
     Icon,
   } from "@skynexui/components";
   import React from "react";
+  import { useRouter } from 'next/router';
   import appConfig from "../config.json";
   import { createClient } from "@supabase/supabase-js";
+  import { ButtonSendSticker } from '../src/components/ButtonSendSticker';
+
 
     
   const SUPABASE_ANON_KEY =
@@ -16,10 +19,25 @@ import {
   const SUPABASE_URL = "https://ykydlyrxytyognveisny.supabase.co";
   const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   
+  function escutaMensagensEmTempoReal(adicionaMensagem){
+        return supabaseClient
+            .from('mensagens')
+            .on('INSERT', ( respostaLive ) =>{
+                adicionaMensagem(respostaLive.new);
+            })
+            .subscribe();
+  }
+
+
   export default function ChatPage() {
+    const roteamento = useRouter();  
+    const usuarioLogado = roteamento.query.username;
+    const [loading, setLoading] = React.useState(true);    
     const [mensagem, setMensagem] = React.useState("");
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
-    const [loading, setLoading] = React.useState(true);
+
+
+
   
     //Se o dado vem de um servidor externo ele sai do fluxo padrão, portanto, usa useEffect()
     React.useEffect(() => {
@@ -32,23 +50,35 @@ import {
           setListaDeMensagens(data);
           setLoading(false);
         });
+
+        escutaMensagensEmTempoReal((novaMensagem) =>{
+            //handleNovaMensagem(novaMensagem);
+            setListaDeMensagens((valorAtualDaLista) =>{
+                return [
+                    novaMensagem,
+                    ...valorAtualDaLista,
+                ]
+            });
+        });
     }, []);
   
     function handleNovaMensagem(novaMensagem) {
       const mensagem = {
         //id: listaDeMensagens.length + 1,
-        de: 'adscarlosms',
+        de: usuarioLogado,
         texto: novaMensagem,
       };
   
       supabaseClient
         .from("mensagens")
-        .insert([mensagem])
+        .insert([
+            mensagem
+        ])
         .then(({ data }) => {
           console.log("criando mensagem: ", data);
-          setListaDeMensagens([data[0], ...listaDeMensagens]);
+          //setListaDeMensagens([data[0], ...listaDeMensagens]);
         });
-  
+
       setMensagem("");
     }
   
@@ -138,6 +168,7 @@ import {
                 alignItems: "center",
               }}
             >
+                       
               <TextField
                 value={mensagem}
                 onChange={(event) => {
@@ -167,6 +198,13 @@ import {
                   marginRight: "12px",
                   color: appConfig.theme.colors.neutrals[200],
                 }}
+              />
+              <ButtonSendSticker 
+                  onStickerClick={(sticker) =>{
+                      console.log('Salva esse sticker no banco');
+                      handleNovaMensagem(':sticker: ' + sticker);
+              }}
+              
               />
               <Button
                 type="submit"
@@ -275,7 +313,7 @@ import {
                   }}
                   tag="span"
                 >
-                  {new Date().toLocaleDateString()}
+                  {(new Date().toLocaleDateString())}
                 </Text>
                 <Icon
                   name={"FaTrash"}
@@ -294,7 +332,16 @@ import {
                   }}
                 />
               </Box>
-              {mensagem.texto}
+              {/*Modo declarativo*/}
+              {/*mensagem.texto.startsWith(':sticker:').toString()*/}
+              {mensagem.texto.startsWith(':sticker:') 
+              ? (
+                  <Image src={mensagem.texto.replace(':sticker:','')} />
+              )
+              :(
+                  mensagem.texto
+              )}
+              
             </Text>
           );
         })}

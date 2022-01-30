@@ -1,5 +1,5 @@
 {
-  "name": "Aluracord - Demon Slayer (carlosms)",
+  "name": "Aluracord - Matrix (peas)",
   "theme": {
     "colors": {
       "primary": {
@@ -29,5 +29,24 @@
         "999": "#800000"
       }
     }
-  }
+  },
+  "stickers": [
+    "akaza.gif",
+    "shinobu.gif",
+    "urokodachi.gif",
+    "tanjiro.gif",
+    "zenitsu.gif",
+    "inosuke2.gif",
+    "rengoku.gif",
+    "muzan.gif",
+    "nezuko.gif",
+    "tomioka.gif",    
+    "https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_1.png",
+    "https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_2.png",
+    "https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_3.png",
+    "https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_4.png",
+    "https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_5.png"
+  
+
+  ]
 }
