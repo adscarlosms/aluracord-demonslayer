@@ -7,11 +7,10 @@ import {
     Icon,
   } from "@skynexui/components";
   import React from "react";
-  import { useRouter } from 'next/router';
   import appConfig from "../config.json";
   import { createClient } from "@supabase/supabase-js";
 
-  
+    
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzUwNTM1NiwiZXhwIjoxOTU5MDgxMzU2fQ.wGqFYGRsXzUcr9d07UOT_gE7GBMhYyd_pHnBZYz8qWM";
   const SUPABASE_URL = "https://ykydlyrxytyognveisny.supabase.co";
@@ -22,7 +21,6 @@ import {
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
   
-    const router = useRouter()
     //Se o dado vem de um servidor externo ele sai do fluxo padrão, portanto, usa useEffect()
     React.useEffect(() => {
       supabaseClient
@@ -39,7 +37,7 @@ import {
     function handleNovaMensagem(novaMensagem) {
       const mensagem = {
         //id: listaDeMensagens.length + 1,
-        de: router.query.username,
+        de: 'adscarlosms',
         texto: novaMensagem,
       };
   
