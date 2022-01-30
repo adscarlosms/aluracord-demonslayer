@@ -7,8 +7,10 @@ import {
     Icon,
   } from "@skynexui/components";
   import React from "react";
+  import { useRouter } from 'next/router';
   import appConfig from "../config.json";
   import { createClient } from "@supabase/supabase-js";
+
   
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzUwNTM1NiwiZXhwIjoxOTU5MDgxMzU2fQ.wGqFYGRsXzUcr9d07UOT_gE7GBMhYyd_pHnBZYz8qWM";
@@ -20,6 +22,7 @@ import {
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
   
+    const router = useRouter()
     //Se o dado vem de um servidor externo ele sai do fluxo padrão, portanto, usa useEffect()
     React.useEffect(() => {
       supabaseClient
@@ -36,7 +39,7 @@ import {
     function handleNovaMensagem(novaMensagem) {
       const mensagem = {
         //id: listaDeMensagens.length + 1,
-        de: "adscarlosms",
+        de: router.query.username,
         texto: novaMensagem,
       };
   
@@ -81,7 +84,7 @@ import {
             boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
             borderRadius: "5px",
             //backgroundColor: appConfig.theme.colors.neutrals[700],
-            backgroundColor: "rgba(0, 0, 0, 0.30)",
+            backgroundColor: "rgba(0, 0, 0, 0.45)",
             height: "100%",
             maxWidth: "95%",
             maxHeight: "95vh",
@@ -210,10 +213,10 @@ import {
             justifyContent: "space-between",
           }}
         >
-          <Text variant="heading5">Chat</Text>
+          <Text variant="heading5">Vamos falar sobre DemonSlayer!</Text>
           <Button
-            variant="tertiary"
-            colorVariant="neutral"
+            variant="primary"
+            colorVariant="dark"
             label="Logout"
             href="/"
           />
